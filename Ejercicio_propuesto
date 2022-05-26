@@ -1,0 +1,70 @@
+import os
+os.system("cls")
+#------------- VARIABLES --------------
+opcion_menu=""
+lista_nombres=[]
+nombre=""
+lista_rut=[]
+run=""
+lista_edades=[]
+edad=0
+confirmacion=""
+#------------- CODIGO PRINCIPAL -------------
+while True:
+    os.system("cls")
+    opcion_menu=str(input("""-------- Menú principal --------
+
+1.- Agregar usuario
+2.- Listar usuarios
+3.- Buscar usuario por run
+4.- Salir
+"""))
+
+    if opcion_menu=="1":
+        os.system("cls")
+        print("\n --- Agregar Usuario ---")
+        nombre=str(input("Ingrese nombre: ")).strip()
+        while not len(nombre)>0:
+            print("Error... Ingrese nombre válido")
+            nombre=str(input("Ingrese nombre: ")).strip()
+        run=str(input("Ingrese run: ")).strip()
+        while not len(run)>0:
+            print("Error... no puede ser vacio.")
+            run=str(input("Ingrese run: ")).strip()
+        edad=int(input("Ingrese edad: "))
+        while not 18<=edad<=100:
+            print("Error... Ingrese una edad válida")
+            edad=int(input("Ingrese edad: "))
+        
+        while True:
+            confirmacion=str(input(f"""
+{nombre}
+{run}
+{edad}
+¿Seguro que quiere agregar al usuario? S/N """ )).upper()
+            if confirmacion=="S":
+                lista_nombres.append(nombre)
+                lista_rut.append(run)            
+                lista_edades.append(edad)
+                break
+            elif confirmacion=="N":
+                print("--- Volviendo al Menú principal ---")
+                break
+            else:
+                print("Elija una opcion válida")        
+        os.system("pause")
+    elif opcion_menu=="2":
+        os.system("cls")
+        print("\n --- Listar usuarios ---")
+        for x in range(len(lista_rut)):
+            print(f"""
+{lista_nombres[x]}
+{lista_rut[x]}
+{lista_edades[x]}""")
+        os.system("pause")
+    elif opcion_menu=="3":
+        os.system("cls")
+        print("\n --- Agregar Usuario ---")
+        os.system("pause")        
+    elif opcion_menu=="4":
+        break
