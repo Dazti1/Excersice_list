@@ -1,3 +1,4 @@
+from doctest import ELLIPSIS_MARKER
 import os
 # ------------ VARIABLES ------------
 opcion_menu="0"
@@ -19,8 +20,9 @@ fecha=""
 confirmar_obs=""
 observacion=""
 confirmar_registro=""
-# ------------ CODIG PRINCIPAL ------------
-
+pos=0
+mod=0
+# ------------ CODIGO PRINCIPAL ------------
 while True:
     os.system("cls")
     opcion_menu=str(input("""
@@ -56,15 +58,20 @@ while True:
         avb=float(input("Ingrese AVB: "))
         while not avb>0:
             avb=float(input("Ingrese un AVB válido: "))
-        confirmar_obs=str(input("¿Desea añadir una observación? S/N "))
-        if confirmar_obs=="N":
-            obs="Sin observación"
-        else:
-            fecha=str(input("Ingrese fecha: dd/mm/aaaa "))
-            observacion=str(input("Ingrese observacion: "))
-            obs=(f"""
+        confirmar_obs=str(input("¿Desea añadir una observación? S/N ")).strip().upper()
+        while True:
+            if confirmar_obs=="N":
+                obs="Sin observación"
+                break
+            elif confirmar_obs=="S":
+                fecha=str(input("Ingrese fecha: dd/mm/aaaa "))
+                observacion=str(input("Ingrese observacion: "))
+                obs=(f"""
 Fecha: {fecha}
 {observacion}""")
+                break
+            else:
+                confirmar_obs=str(input("¿Desea añadir una observación? S/N ")).strip().upper()
         while True:
             os.system("cls")
             print(f"""
@@ -73,10 +80,9 @@ Fecha: {fecha}
 {precio}
 {pais_origen}
 {estilo}
-{estilo}
 {avb}
 {obs}""")
-            confirmar_registro=str(input("¿Está seguro de añadir este registro? S/N")).strip().upper()
+            confirmar_registro=str(input("¿Está seguro de añadir este registro? S/N ")).strip().upper()
             if confirmar_registro=="S":
                 lista_codigo.append(codigo)
                 lista_nombre.append(nombre)
@@ -92,23 +98,139 @@ Fecha: {fecha}
             else:
                 print("Elija una opcion válida")              
         os.system("pause")
-    if opcion_menu=="2":
+    elif opcion_menu=="2":
         os.system("cls")
+        print("------------ Lista de cervezas ------------")
+        for x in range(len(lista_nombre)):
+            print(f"""
+{lista_codigo[x]}
+{lista_nombre[x]}
+{lista_precio[x]}
+{lista_pais[x]}
+{lista_estilo[x]}
+{lista_avb[x]}
+{lista_obs[x]}""")
         os.system("pause")
-    if opcion_menu=="3":
+    elif opcion_menu=="3":
         os.system("cls")
+        print("------------ Buscar cerveza por código ------------")
+        codigo=str(input("Introduzca el código de la cerveza: ")).strip().upper()
+        if codigo in lista_codigo:
+            pos=lista_codigo.index(codigo)
+            print(f"""
+{lista_codigo[pos]}
+{lista_nombre[pos]}
+{lista_precio[pos]}
+{lista_pais[pos]}
+{lista_estilo[pos]}
+{lista_avb[pos]}
+{lista_obs[pos]}""")
+        else:
+            print("El código no coincide con ningún registro, regresando al menú principal.")
         os.system("pause")
-    if opcion_menu=="4":
+    elif opcion_menu=="4":
         os.system("cls")
+        print("------------ Eliminar registro de cerveza ------------")
+        codigo=str(input("Introduzca el código del registro que desea eliminar: ")).strip().upper()
+        if codigo not in lista_codigo:
+            print("El código no coincide con ningún registro, regresando al menú principal.")
+        else:
+            pos=lista_codigo.index(codigo)
+            print(f"""
+{lista_codigo[pos]}
+{lista_nombre[pos]}
+{lista_precio[pos]}
+{lista_pais[pos]}
+{lista_estilo[pos]}
+{lista_avb[pos]}
+{lista_obs[pos]}""")
+            confirmar_registro=str(input("¿Está seguro de eliminar este registro? S/N ")).strip().upper()
+            if confirmar_registro=="S":
+                lista_codigo.pop(pos)
+                lista_nombre.pop(pos)
+                lista_precio.pop(pos)
+                lista_pais.pop(pos)
+                lista_estilo.pop(pos)
+                lista_avb.pop(pos)
+                lista_obs.pop(pos)
+            elif confirmar_registro=="N":
+                print("Volviendo al menú principal.")
         os.system("pause")
-    if opcion_menu=="5":
+    elif opcion_menu=="5":
         os.system("cls")
+        print("------------ Modificar registro de cerveza ------------")
+        codigo=str(input("Introduzca el código del registro que desea modificar: ")).strip().upper()
+        if codigo not in lista_codigo:
+            print("El código no coincide con ningún registro, regresando al menú principal.")
+        else:
+            pos=lista_codigo.index(codigo)
+            mod=int(input("""¿Qué parámetro desea modificar?
+1.- Nombre
+2.- Precio
+3.- País
+4.- Estilo
+5.- avb
+"""))
+            if mod==1:
+                nombre=str(input("Introduzca el nuevo nombre: ")).strip().capitalize()
+                while len(nombre)<=0:
+                    nombre=str(input("Por favor, ingrese un nombre válido: ")).strip().capitalize()
+                lista_nombre.pop(pos)
+                lista_nombre.insert(pos,nombre)
+            elif mod==2:
+                precio=int(input("Introduzca el nuevo precio: "))
+                while precio<=0:
+                    precio=int(input("Precio no válido, por favor intentelo nuevamente: "))
+                lista_precio.pop(pos)
+                lista_precio.insert(pos,precio)
+            elif mod==3:
+                pais_origen=str(input("Introduzca el nuevo país de origen: ")).strip().capitalize()
+                while not len(pais_origen)>0:
+                    pais_origen=str(input("Por favor, ingrese un país válido: ")).strip().capitalize()
+                lista_pais.pop(pos)
+                lista_pais.insert(pos,pais_origen)
+            elif mod==4:
+                estilo=str(input("Introduzca el nuevo Estilo: ")).strip().lower()
+                while estilo not in ["frutal","ale","amber"]:
+                    estilo=str(input("Por favor ingrese un estilo válido: ")).strip().lower()
+                lista_estilo.pop(pos)
+                lista_estilo.insert(pos,estilo)
+            elif mod==5:
+                avb=float(input("Introduzca el nuevo AVB: "))
+                while not avb>0:
+                    avb=float(input("Ingrese un AVB válido: "))
+                lista_avb.pop(pos)
+                lista_avb.insert(pos,avb)
+            else:
+                print("No eligío un parámetro válido, regresando al menú principal.")
         os.system("pause")
-    if opcion_menu=="6":
+    elif opcion_menu=="6":
         os.system("cls")
+        print("------------ Buscar cervezas por tipo ------------")
+        estilo=str(input("Escriba el estilo que desea buscar: ")).strip().lower()
+        if estilo not in lista_estilo:
+            print("Su busqueda no coincide con los estilos de cerveza, volviendo al menú principal.")
+        else:
+            for x in range(len(lista_estilo)):
+                if estilo==lista_estilo[x]:
+                    print(f"""
+{lista_codigo[x]}
+{lista_nombre[x]}
+{lista_precio[x]}
+{lista_pais[x]}
+{lista_estilo[x]}
+{lista_avb[x]}
+{lista_obs[x]}""")
         os.system("pause")
-    if opcion_menu=="7":
+    elif opcion_menu=="7":
         os.system("cls")
+        print("------------ Ingresar observaciones a cerveza ------------")
+        codigo=str(input("Ingrese el código del resgistro al que añadir observación: ")).strip().upper()
+        if codigo not in lista_codigo:
+            print("El código no coincide con ningún registro, regresando al menú principal.")
+        else:
+            pos=lista_codigo.index(codigo)
+            
         os.system("pause")
-    if opcion_menu=="8":
+    elif opcion_menu=="8":
         break
