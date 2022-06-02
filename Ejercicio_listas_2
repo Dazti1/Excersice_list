@@ -21,7 +21,7 @@ confirmar_obs=""
 observacion=""
 confirmar_registro=""
 pos=0
-mod=0
+new=0
 # ------------ CODIGO PRINCIPAL ------------
 while True:
     os.system("cls")
@@ -65,7 +65,7 @@ while True:
                 break
             elif confirmar_obs=="S":
                 fecha=str(input("Ingrese fecha: dd/mm/aaaa "))
-                observacion=str(input("Ingrese observacion: "))
+                observacion=str(input("Ingrese observación: "))
                 obs=(f"""
 Fecha: {fecha}
 {observacion}""")
@@ -115,6 +115,8 @@ Fecha: {fecha}
         os.system("cls")
         print("------------ Buscar cerveza por código ------------")
         codigo=str(input("Introduzca el código de la cerveza: ")).strip().upper()
+        while len(codigo)!=3:
+            codigo=str(input("Introduzca un código válido: ")).strip().upper()
         if codigo in lista_codigo:
             pos=lista_codigo.index(codigo)
             print(f"""
@@ -164,38 +166,38 @@ Fecha: {fecha}
             print("El código no coincide con ningún registro, regresando al menú principal.")
         else:
             pos=lista_codigo.index(codigo)
-            mod=int(input("""¿Qué parámetro desea modificar?
+            new=int(input("""¿Qué parámetro desea modificar?
 1.- Nombre
 2.- Precio
 3.- País
 4.- Estilo
 5.- avb
 """))
-            if mod==1:
+            if new==1:
                 nombre=str(input("Introduzca el nuevo nombre: ")).strip().capitalize()
                 while len(nombre)<=0:
                     nombre=str(input("Por favor, ingrese un nombre válido: ")).strip().capitalize()
                 lista_nombre.pop(pos)
                 lista_nombre.insert(pos,nombre)
-            elif mod==2:
+            elif new==2:
                 precio=int(input("Introduzca el nuevo precio: "))
                 while precio<=0:
                     precio=int(input("Precio no válido, por favor intentelo nuevamente: "))
                 lista_precio.pop(pos)
                 lista_precio.insert(pos,precio)
-            elif mod==3:
+            elif new==3:
                 pais_origen=str(input("Introduzca el nuevo país de origen: ")).strip().capitalize()
                 while not len(pais_origen)>0:
                     pais_origen=str(input("Por favor, ingrese un país válido: ")).strip().capitalize()
                 lista_pais.pop(pos)
                 lista_pais.insert(pos,pais_origen)
-            elif mod==4:
+            elif new==4:
                 estilo=str(input("Introduzca el nuevo Estilo: ")).strip().lower()
                 while estilo not in ["frutal","ale","amber"]:
                     estilo=str(input("Por favor ingrese un estilo válido: ")).strip().lower()
                 lista_estilo.pop(pos)
                 lista_estilo.insert(pos,estilo)
-            elif mod==5:
+            elif new==5:
                 avb=float(input("Introduzca el nuevo AVB: "))
                 while not avb>0:
                     avb=float(input("Ingrese un AVB válido: "))
@@ -230,7 +232,23 @@ Fecha: {fecha}
             print("El código no coincide con ningún registro, regresando al menú principal.")
         else:
             pos=lista_codigo.index(codigo)
-            
+            if lista_obs[pos]=="Sin observación":
+                print("Ingrese nueva observación")
+                fecha=str(input("Ingrese fecha: dd/mm/aaaa "))
+                new=str(input("Ingrese nueva observación: "))
+                lista_obs[pos]=(f"""
+Fecha: {fecha}
+{new}""")
+            else:
+                obs=lista_obs[pos]
+                print("Ingrese nueva observación")
+                fecha=str(input("Ingrese fecha: dd/mm/aaaa "))
+                new=str(input("Ingrese nueva observación: "))
+                lista_obs[pos]=(f"""
+{obs}
+Fecha: {fecha}
+{new}""")
         os.system("pause")
     elif opcion_menu=="8":
+        
         break
