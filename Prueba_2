@@ -1,0 +1,138 @@
+import os
+# ------------ VARIABLES ------------
+rut=0
+lista_rut=[]
+nombre=""
+lista_nombre=[]
+direccion=""
+lista_direccion=[]
+correo=""
+lista_correo=[]
+edad=0
+lista_edad=[]
+sexo=""
+lista_sexo=[]
+registro=""
+lista_registro=[]
+ps=""
+lista_ps=[]
+confirmacion=""
+confirmacion_correo=False
+opcion_menu=""
+fecha=""
+obs=""
+old=""
+# ------------ CODIGO PRINCIPAL ------------
+while True:
+    os.system("cls")
+    opcion_menu=str(input("""
+------------ MENÚ PRINCIÁL ------------
+
+1.- Registrar Paciente
+2.- Atención Paciente
+3.- Consultar Datos Paciente
+4.- Salir
+"""))
+    if opcion_menu=="1":
+        os.system("cls")
+        print("------------ Registrar Paciente ------------")
+        rut=int(input("Ingrese rut del paciente sin DV ni puntos (11111111): "))
+        while not 5000000<rut<99999999:
+            rut=int(input("Su rut no es válido, por favor intentelo nuevamente: "))
+        nombre=str(input("Ingrese nombre del paciente: ")).strip().capitalize()
+        while not 0<len(nombre):
+            nombre=str(input("Por favor ingrese un nombre válido: ")).strip().capitalize()
+        direccion=str(input("Ingrese dirección del paciente: ")).strip().capitalize()
+        while not 0<len(direccion):
+            direccion=str(input("Por favor ingrese una dirección válida: ")).strip().capitalize()
+        while confirmacion_correo==False:
+            correo=str(input("Ingrese correo: "))
+            for x in correo:
+                if x=="@":
+                    confirmacion_correo=True
+        edad=int(input("Ingrese edad del paciente: "))
+        while not 0<=edad<=110:
+            edad=int(input("Por favor, ingrese una edad válida: "))
+        sexo=str(input("Ingrese sexo del paciente (F/M): ")).strip().upper()
+        while sexo not in ["F","M"]:
+            sexo=str(input("Por favor, ingrese un sexo válido (F/M): ")).strip().upper()
+        registro="Sin registros"
+        ps=str(input("¿Isapre o Fonasa? \n")).strip().upper()
+        while ps not in ["ISAPRE","FONASA"]:
+            ps=str(input("Por favor, especifique si es Isapre o Fonasa: ")).strip().upper()
+        os.system("cls")
+        print(f"""{rut}
+{nombre}
+{direccion}
+{correo}
+{edad}
+{sexo}
+{ps}""")
+        confirmacion=str(input("¿Está seguro de añadir este registro? S/N \n")).strip().upper()
+        while confirmacion not in ["S","N"]:
+            confirmacion=str(input("¿Está seguro de añadir este registro? S/N \n")).strip().upper()
+        if confirmacion=="S":
+            lista_rut.append(rut)
+            lista_nombre.append(nombre)
+            lista_direccion.append(direccion)
+            lista_correo.append(correo)
+            lista_edad.append(edad)
+            lista_sexo.append(sexo)
+            lista_registro.append(registro)
+            lista_ps.append(ps)
+            print("Volviendo al menú principal.")
+        elif confirmacion=="N":
+            print("Volviendo al menú principal.")
+        else:
+            print("Elija una opción válida")
+        os.system("pause")
+    elif opcion_menu=="2":
+        os.system("cls")
+        print("------------ Atención Paciente ------------")
+        rut=int(input("Ingrese rut del paciente sin DV ni puntos (11111111): "))
+        while not 5000000<rut<99999999:
+            rut=int(input("Su rut no es válido, por favor intentelo nuevamente: "))
+        if rut in lista_rut:
+            pos=lista_rut.index(rut)
+            fecha=str(input("Ingrese fecha formato dd/mm/aaaa\n")).strip()
+            obs=str(input("Ingrese observación del paciente: \n")).strip()
+            if lista_registro[pos]=="Sin registros":
+                lista_registro[pos]=f"""{fecha}
+{obs}"""
+            else:
+                old=lista_registro[pos]
+                lista_registro[pos]=f"""{old}
+{fecha}
+{obs}"""
+        else:
+            print("El rut ingresado no se encuentra registrado, volviendo al menú principal.")
+        os.system("pause")
+    elif opcion_menu=="3":
+        os.system("cls")
+        print("------------ Consultar Datos Paciente ------------")
+        rut=int(input("Ingrese rut del paciente sin DV ni puntos (11111111): "))
+        while not 5000000<rut<99999999:
+            rut=int(input("Su rut no es válido, por favor intentelo nuevamente: "))
+        if rut in lista_rut:
+            pos=lista_rut.index(rut)
+            print(f"""
+{lista_rut[pos]}
+{lista_nombre[pos]}
+{lista_direccion[pos]}
+{lista_correo[pos]}
+{lista_edad[pos]}
+{lista_sexo[pos]}
+{lista_ps[pos]}
+{lista_registro[pos]}""")
+        else:
+            print("El rut ingresado no se encuentra registrado, volviendo al menú principal.")
+        os.system("pause")
+    elif opcion_menu=="4":
+        os.system("cls")
+        confirmacion=str(input("Seguro que quiere salir del sistema? S/N\n")).strip().upper()
+        if confirmacion=="S":
+            print("¡Hasta pronto!")
+            break
+        else:
+            print("Volviendo al menú principal.")
+        os.system("pause")
