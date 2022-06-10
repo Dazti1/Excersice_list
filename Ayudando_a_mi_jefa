@@ -1,0 +1,44 @@
+import os
+#---------- Variables ----------
+vlista=[] # listas tienen que ser declaradas vacías(En caso de tener que solicitar datos al usuario)
+lista_2=[] 
+nombre=""
+apellido_patenro=""
+sexo=""
+alergia=False
+rut=""
+apellido_materno=""
+nacionalidad=""
+edad=0
+#---------- Codigo Principal ----------
+nombre=str(input("Ingrese nombre del paciente: \n")).strip().capitalize() # Solicitando datos al usuario
+apellido_patenro=str(input("Ingrese apellido paterno del paciente: \n"))# Solicitando datos al usuario
+sexo=str(input("Ingrese sexo del paciente: F/M \n")).strip().upper()# Solicitando datos al usuario
+alergia=str(input("¿El paciente es alergico? S/N \n")).strip().upper()# Solicitando datos al usuario
+if alergia=="S": 
+    alergia=True
+elif alergia=="N":
+    alergia=False
+vlista.insert(0,nombre) # añadiendo datos a la lista
+vlista.insert(1,apellido_patenro)
+vlista.insert(2,sexo)
+vlista.insert(3,alergia)
+print(vlista)
+
+rut=str(input("Ingrese rut del paciente: \n")).strip()
+vlista.insert(0,rut)
+apellido_materno=str(input("Ingrese apellido materno: ")).strip().capitalize()
+vlista.insert(3,apellido_materno)
+
+nacionalidad=str(input("Ingrese nacionalidad del paciente: \n")).strip().capitalize()
+edad=int(input("ingrese edad del paciente: "))
+lista_2.insert(0,nacionalidad)
+lista_2.insert(1,edad)
+print(vlista)
+os.system("pause")
+os.system("cls")
+print(lista_2)
+os.system("pause")
+vlista.extend(lista_2) # añadir segunda lista
+os.system("cls")
+print(vlista)
